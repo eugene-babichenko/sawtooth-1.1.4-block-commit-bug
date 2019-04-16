@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  validator:
+    image: hyperledger/sawtooth-validator:1.1.4
+    volumes:
+      - validator_keys:/etc/sawtooth/keys
+      - chain_data:/var/lib/sawtooth/
+      - .:/project
+    ports:
+      - "8800:8800"
+    entrypoint: sh /project/validator.sh
+
+  consensus:
+    image: buggy-consensus:latest
+    entrypoint: /projects/consensus/target/debug/consensus --connect tcp://validator:5005
+  
+  rest-api:
+    image: hyperledger/sawtooth-rest-api:1.1.4
+    ports:
+      - "8080:8080"
+    entrypoint: sawtooth-rest-api --bind 0.0.0.0:8080 --connect tcp://validator:4004
+
+  settings-tp:
+    image: hyperledger/sawtooth-settings-tp:1.1.4
+    entrypoint: settings-tp --connect tcp://validator:4004
+
+volumes:
+  validator_keys:
+  chain_data:

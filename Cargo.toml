@@ -1,0 +1,9 @@
+[package]
+name = "consensus"
+version = "0.1.0"
+authors = ["Yevhenii Babichenko <eugene.babichenko@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+docopt = "~1.0"
+sawtooth-sdk = { git = "https://github.com/hyperledger/sawtooth-core.git", tag = "v1.1.2" }
